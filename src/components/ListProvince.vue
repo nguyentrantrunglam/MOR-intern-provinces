@@ -4,17 +4,19 @@
       <li
         v-for="province in filteredItems"
         :key="province.code"
-        class="listProvince-item"
+        class="listProvince-item container"
       >
-        <input
-          class="checkbox"
-          :id="province.code"
-          :value="province.name"
-          type="checkbox"
-          v-model="selected"
-          @input="checkEmpty"
-        />
-        <label :for="province.code">{{ province.name }}</label>
+        <label :for="province.code"
+          >{{ province.name }}
+          <input
+            class="checkbox"
+            :id="province.code"
+            :value="province.name"
+            type="checkbox"
+            v-model="selected"
+            @input="checkEmpty" />
+          <span class="checkmark"></span
+        ></label>
       </li>
     </ul>
     <div class="listProvince-buttons">
@@ -113,6 +115,77 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  height: 16px;
+  width: 16px;
+  background-color: #fff;
+  border-radius: 2px;
+  border: 1px solid #000
+}
+
+.checkmark:active{
+  border: none;
+}
+
+/* On mouse-over, add a grey background color */
+
+/* When the checkbox is checked, add a blue background */
+.container input:checked ~ .checkmark {
+  background-color: #45D1C9;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+  left: 6px;
+  top: 2px;
+  width: 4px;
+  height: 8px;
+  border: solid white;
+  border-width: 0 1px 1px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+  
+}
+
 .listProvince {
   min-height: 36px;
   width: 480px;
@@ -145,7 +218,7 @@ export default {
   justify-content: left;
   color: black;
 }
-label{
+label {
   cursor: pointer;
 }
 p {
@@ -167,7 +240,6 @@ ul {
   padding-top: 20px;
   padding-left: 20px;
 }
-
 
 .listProvince-buttons {
   padding-left: 16px;
@@ -204,7 +276,7 @@ ul {
   cursor: pointer;
 }
 input[type="checkbox"] {
-  accent-color: #3fa387;
+  accent-color: #45d1c9;
 }
 
 /* width */

@@ -5,6 +5,7 @@
       class="search"
       type="text"
       placeholder="Chọn tỉnh thành"
+      v-on:click="deleteInput"
     />
     <font-awesome-icon class="dropdown-btn" icon="fa-solid fa-caret-down" />
   </div>
@@ -13,17 +14,28 @@
 <script>
 export default {
   name: "SelectProvince",
-  props: ['inputValue'],
+  props: ["inputValue"],
   data() {
     return {
-      inpValue: '',
+      inpValue: "",
       displayList: "block",
     };
+  },
+  methods: {
+    deleteInput() {
+      this.inpValue = "";
+    },
   },
   watch: {
     inpValue() {
       this.$emit("updateListProvince", this.displayList);
       this.$emit("updateInputValue", this.inpValue);
+    },
+    inputValue: {
+      handle() {
+        this.inpValue = this.inputValue;
+      },
+      deep: true,
     },
   },
 };
@@ -76,5 +88,6 @@ input[type="text"] {
   right: 16px;
   top: 14px;
   width: 8px;
+  cursor: pointer;
 }
 </style>

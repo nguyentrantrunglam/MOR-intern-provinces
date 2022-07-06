@@ -18,7 +18,12 @@
       </li>
     </ul>
     <div class="listProvince-buttons">
-      <button @click="sendData" class="button-confirm" :disabled="!selected">
+      <button
+        :disable="isDisableButton"
+        @click="sendData"
+        class="button-confirm"
+        :disabled="!selected"
+      >
         Đồng ý
       </button>
       <button @click="cancel" class="button-cancel">Hủy</button>
@@ -39,14 +44,15 @@ export default {
       displayShow: true,
       displayList: "none",
       inputValueEmpty: "",
+      isDisableButton: true,
+      cursor: "context-menu",
     };
   },
 
-  mounted() {
-    fetch("https://provinces.open-api.vn/api/?depth=3")
-      .then((res) => res.json())
-      .then((data) => (this.provinces = data))
-      .catch((err) => console.log(err.message));
+  async mounted() {
+    const res = await fetch("https://provinces.open-api.vn/api/?depth=3");
+    this.provinces = await res.json();
+    return this.provinces;
   },
   methods: {
     sendData() {
@@ -62,6 +68,7 @@ export default {
     },
     cancel() {
       this.$emit("updateListProvince", this.displayList);
+      this.$emit("updateProvince", []);
     },
   },
 
@@ -87,12 +94,19 @@ export default {
     },
   },
   watch: {
-    selected() {
-      if (this.selected.length == 0) {
-        this.bgColor = "#DCDCDC";
-      } else {
-        this.bgColor = "#007BC3";
-      }
+    selected: {
+      handler() {
+        if (this.selected.length == 0) {
+          this.bgColor = "#DCDCDC";
+          this.isDisableButton = true;
+          this.cursor = "context-menu";
+        } else {
+          this.bgColor = "#007BC3";
+          this.isDisableButton = false;
+          this.cursor = "pointer";
+        }
+      },
+      deep: true,
     },
   },
 };
@@ -103,7 +117,7 @@ export default {
   min-height: 36px;
   width: 480px;
   max-height: 304px;
-  height:fit-content;
+  height: fit-content;
   position: absolute;
   left: 80px;
   top: 152px;
@@ -131,7 +145,9 @@ export default {
   justify-content: left;
   color: black;
 }
-
+label{
+  cursor: pointer;
+}
 p {
   margin: 0;
   margin-left: 10px;
@@ -142,6 +158,7 @@ p {
   height: 16px;
   margin-top: 4px;
   margin-right: 10px;
+  cursor: pointer;
 }
 
 ul {
@@ -150,6 +167,7 @@ ul {
   padding-top: 20px;
   padding-left: 20px;
 }
+
 
 .listProvince-buttons {
   padding-left: 16px;
@@ -168,11 +186,9 @@ ul {
   line-height: 24px;
   border: none;
   color: #ffffff;
+  cursor: v-bind(cursor);
 }
 
-.button-confirm:hover {
-  cursor: pointer;
-}
 .button-cancel {
   height: 24px;
   width: 82px;
@@ -185,6 +201,7 @@ ul {
   line-height: 24px;
   border: none;
   color: #007bc3;
+  cursor: pointer;
 }
 input[type="checkbox"] {
   accent-color: #3fa387;

@@ -22,7 +22,7 @@ export default {
   props: ["selectedProvinces"],
   data() {
     return {
-      selected:this.selectedProvinces,
+      selected: this.selectedProvinces,
     };
   },
 
@@ -32,11 +32,19 @@ export default {
     },
   },
   watch: {
-    selectedProvinces(){
-      this.selected = this.selectedProvinces
+    selectedProvinces: {
+      handler() {
+        this.selected = this.selectedProvinces;
+        console.log(this.selected);
+      },
+      deep: true,
     },
-    selected() {
-      this.$emit("updateProvince", this.selected);
+    selected: {
+      handler() {
+        this.$emit("updateProvince", this.selected);
+        console.log(this.selected);
+      },
+      deep: true,
     },
   },
 };

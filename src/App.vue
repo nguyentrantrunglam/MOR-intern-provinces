@@ -21,7 +21,6 @@
     :selectedProvinces="selectedProvinces"
     @updateProvince="updateProvince"
   />
-  <span>{{inputValue}}</span>
 </template>
 
 <script>
@@ -40,8 +39,12 @@ export default {
       displayList: "none",
       displayShow: false,
       selectedProvinces: [],
-      inputValue: ''
+      inputValue: "",
+      isDisable: true,
     };
+  },
+  watch: {
+
   },
   methods: {
     updateInputValue(inputValue) {
@@ -66,8 +69,7 @@ export default {
     handleEnableList() {
       if (this.displayList === "none") {
         this.displayList = "block";
-      }
-      else {
+      } else {
         this.displayList = "none";
       }
     },
